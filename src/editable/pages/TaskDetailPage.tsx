@@ -8,6 +8,7 @@ import type { SitePost } from '@/lib/site-connector'
 import { EditableSiteShell } from '@/editable/shell/EditableSiteShell'
 import { EditableArticleComments } from '@/editable/components/EditableArticleComments'
 import { getTaskTheme, taskThemeStyle } from '@/editable/theme/task-themes'
+import { Ads } from '@/lib/ads'
 
 export const revalidate = 3
 
@@ -203,6 +204,9 @@ function ArticleDetail({ post, related, comments }: { post: SitePost; related: S
         </div>
         {images[0] ? <img src={images[0]} alt="" className="mt-10 aspect-[16/9] w-full rounded-[var(--tk-radius)] border border-[var(--tk-line)] object-cover" /> : null}
         <BodyContent post={post} />
+        <div className="mx-auto max-w-6xl px-4 py-8">
+          <Ads slot="article-bottom" showLabel eager className="mx-auto w-full" />
+        </div>
         <EditableArticleComments slug={post.slug} comments={comments} />
       </article>
       <RelatedStrip task="article" related={related} />
@@ -220,33 +224,40 @@ function ListingDetail({ post, related }: { post: SitePost; related: SitePost[] 
   const website = getField(post, ['website', 'url'])
   const mapSrc = mapSrcFor(post)
   return (
-    <section className="mx-auto max-w-[var(--editable-container)] px-6 py-14 sm:py-20 lg:px-8">
-      <BackLink task="listing" />
-      <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_380px]">
-        <article className="min-w-0">
-          <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
-            <div className="flex h-28 w-28 shrink-0 items-center justify-center overflow-hidden rounded-[var(--tk-radius)] border border-[var(--tk-line)] bg-[var(--tk-raised)]">
-              {logo ? <img src={logo} alt="" className="h-full w-full object-cover" /> : <Building2 className="h-12 w-12 text-[var(--tk-muted)]" />}
+    <>
+      <section className="mx-auto max-w-[var(--editable-container)] px-6 py-8 sm:py-10 lg:px-8">
+        <div className="mx-auto max-w-6xl px-4 py-4">
+          <Ads slot="in-feed" showLabel eager className="mx-auto w-full" />
+        </div>
+      </section>
+      <section className="mx-auto max-w-[var(--editable-container)] px-6 py-14 sm:py-20 lg:px-8">
+        <BackLink task="listing" />
+        <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_380px]">
+          <article className="min-w-0">
+            <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
+              <div className="flex h-28 w-28 shrink-0 items-center justify-center overflow-hidden rounded-[var(--tk-radius)] border border-[var(--tk-line)] bg-[var(--tk-raised)]">
+                {logo ? <img src={logo} alt="" className="h-full w-full object-cover" /> : <Building2 className="h-12 w-12 text-[var(--tk-muted)]" />}
+              </div>
+              <div className="min-w-0">
+                <Kicker task="listing">Business listing</Kicker>
+                <h1 className="editable-display mt-4 text-4xl font-semibold leading-[1.04] tracking-[-0.03em] sm:text-5xl">{post.title}</h1>
+                <DetailMeta post={post} category={getField(post, ['category'])} />
+              </div>
             </div>
-            <div className="min-w-0">
-              <Kicker task="listing">Business listing</Kicker>
-              <h1 className="editable-display mt-4 text-4xl font-semibold leading-[1.04] tracking-[-0.03em] sm:text-5xl">{post.title}</h1>
-              <DetailMeta post={post} category={getField(post, ['category'])} />
-            </div>
-          </div>
-          {leadText(post) ? <p className="mt-7 max-w-2xl text-lg leading-8 text-[var(--tk-muted)]">{leadText(post)}</p> : null}
-          <InfoGrid items={[['Location', address, MapPin], ['Phone', phone, Phone], ['Email', email, Mail], ['Website', website, Globe2]]} />
-          <Divider />
-          <BodyContent post={post} />
-          <ImageStrip images={images.slice(1)} label="Showcase" />
-        </article>
-        <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
-          {mapSrc ? <MapBox src={mapSrc} label={address || post.title} /> : null}
-          <ContactAction website={website} phone={phone} email={email} />
-          <RelatedPanel task="listing" post={post} related={related} />
-        </aside>
-      </div>
-    </section>
+            {leadText(post) ? <p className="mt-7 max-w-2xl text-lg leading-8 text-[var(--tk-muted)]">{leadText(post)}</p> : null}
+            <InfoGrid items={[['Location', address, MapPin], ['Phone', phone, Phone], ['Email', email, Mail], ['Website', website, Globe2]]} />
+            <Divider />
+            <BodyContent post={post} />
+            <ImageStrip images={images.slice(1)} label="Showcase" />
+          </article>
+          <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
+            {mapSrc ? <MapBox src={mapSrc} label={address || post.title} /> : null}
+            <ContactAction website={website} phone={phone} email={email} />
+            <RelatedPanel task="listing" post={post} related={related} />
+          </aside>
+        </div>
+      </section>
+    </>
   )
 }
 
@@ -261,6 +272,11 @@ function ClassifiedDetail({ post, related }: { post: SitePost; related: SitePost
   const website = getField(post, ['website', 'url'])
   return (
     <>
+      <section className="mx-auto max-w-[var(--editable-container)] px-6 py-8 sm:py-10 lg:px-8">
+        <div className="mx-auto max-w-6xl px-4 py-4">
+          <Ads slot="header" showLabel eager className="mx-auto w-full" />
+        </div>
+      </section>
       <section className="mx-auto grid max-w-[var(--editable-container)] gap-10 px-6 py-14 sm:py-20 lg:grid-cols-[360px_minmax(0,1fr)] lg:px-8">
         <aside className="lg:sticky lg:top-24 lg:self-start">
           <BackLink task="classified" />
@@ -296,6 +312,11 @@ function ImageDetail({ post, related }: { post: SitePost; related: SitePost[] })
   const gallery = images.length ? images : ['/placeholder.svg?height=900&width=1200']
   return (
     <>
+      <section className="mx-auto max-w-[var(--editable-container)] px-6 py-8 sm:py-10 lg:px-8">
+        <div className="mx-auto max-w-6xl px-4 py-4">
+          <Ads slot="sidebar" showLabel eager className="mx-auto w-full" />
+        </div>
+      </section>
       <section className="mx-auto max-w-[var(--editable-container)] px-6 py-14 sm:py-20 lg:px-8">
         <BackLink task="image" />
         <div className="mt-8 grid gap-10 lg:grid-cols-[1.4fr_0.6fr]">
@@ -324,6 +345,11 @@ function BookmarkDetail({ post, related }: { post: SitePost; related: SitePost[]
   const website = getField(post, ['website', 'url', 'link'])
   return (
     <>
+      <section className="mx-auto max-w-3xl px-6 py-8 sm:py-10">
+        <div className="mx-auto max-w-6xl px-4 py-4">
+          <Ads slot="footer" showLabel eager className="mx-auto w-full" />
+        </div>
+      </section>
       <article className="mx-auto max-w-3xl px-6 py-14 sm:py-20">
         <BackLink task="sbm" />
         <div className="mt-10 flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--tk-accent-soft)] text-[var(--tk-accent)]"><Bookmark className="h-7 w-7" /></div>
@@ -346,8 +372,14 @@ function BookmarkDetail({ post, related }: { post: SitePost; related: SitePost[]
 function PdfDetail({ post, related }: { post: SitePost; related: SitePost[] }) {
   const fileUrl = getField(post, ['fileUrl', 'pdfUrl', 'documentUrl', 'url'])
   return (
-    <section className="mx-auto max-w-[var(--editable-container)] px-6 py-14 sm:py-20 lg:px-8">
-      <BackLink task="pdf" />
+    <>
+      <section className="mx-auto max-w-[var(--editable-container)] px-6 py-8 sm:py-10 lg:px-8">
+        <div className="mx-auto max-w-6xl px-4 py-4">
+          <Ads slot="in-feed" showLabel eager className="mx-auto w-full" />
+        </div>
+      </section>
+      <section className="mx-auto max-w-[var(--editable-container)] px-6 py-14 sm:py-20 lg:px-8">
+        <BackLink task="pdf" />
       <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_340px]">
         <article className="min-w-0">
           <div className="flex items-center gap-5">
@@ -379,7 +411,8 @@ function PdfDetail({ post, related }: { post: SitePost; related: SitePost[] }) {
           <RelatedPanel task="pdf" post={post} related={related} />
         </aside>
       </div>
-    </section>
+      </section>
+    </>
   )
 }
 
@@ -391,6 +424,11 @@ function ProfileDetail({ post, related }: { post: SitePost; related: SitePost[] 
   const email = getField(post, ['email'])
   return (
     <>
+      <section className="mx-auto max-w-[var(--editable-container)] px-6 py-8 sm:py-10 lg:px-8">
+        <div className="mx-auto max-w-6xl px-4 py-4">
+          <Ads slot="header" showLabel eager className="mx-auto w-full" />
+        </div>
+      </section>
       <section className="mx-auto max-w-[var(--editable-container)] px-6 py-14 sm:py-20 lg:px-8">
         <BackLink task="profile" />
         <div className="mt-8 grid gap-10 lg:grid-cols-[360px_minmax(0,1fr)]">

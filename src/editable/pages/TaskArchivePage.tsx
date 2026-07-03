@@ -9,6 +9,7 @@ import { taskPageMetadata } from '@/config/site.content'
 import { taskPageVoices } from '@/editable/content/task-pages.content'
 import { EditableSiteShell } from '@/editable/shell/EditableSiteShell'
 import { getTaskTheme, taskThemeStyle } from '@/editable/theme/task-themes'
+import { Ads } from '@/lib/ads'
 
 export const revalidate = 3
 
@@ -93,6 +94,9 @@ export function TaskArchiveView({ task, posts, pagination, category, basePath }:
   const label = taskConfig?.label || task
   const categoryLabel = category === 'all' ? 'All categories' : CATEGORY_OPTIONS.find((item) => item.slug === category)?.name || category
 
+  // Different ad slots for different task types
+  const adSlot = task === 'article' ? 'sidebar' : task === 'listing' ? 'in-feed' : task === 'classified' ? 'header' : task === 'profile' ? 'footer' : 'sidebar'
+
   return (
     <EditableSiteShell>
       <main style={taskThemeStyle(task)} className="min-h-screen bg-[var(--tk-bg)] text-[var(--tk-text)]">
@@ -139,7 +143,13 @@ export function TaskArchiveView({ task, posts, pagination, category, basePath }:
           </div>
         </header>
 
-        <section className="mx-auto max-w-[var(--editable-container)] px-6 py-16 sm:py-20 lg:px-8">
+        <section className="mx-auto max-w-[var(--editable-container)] px-6 py-12 sm:py-14 lg:px-8">
+          <div className="mx-auto max-w-6xl px-4 py-6">
+            <Ads slot={adSlot} showLabel eager className="mx-auto w-full" />
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-[var(--editable-container)] px-6 py-8 sm:py-12 lg:px-8">
           {posts.length ? (
             <div className={taskGrid[task]}>
               {posts.map((post, index) => <ArchivePostCard key={post.id || post.slug} post={post} task={task} basePath={basePath} index={index} />)}
