@@ -3,9 +3,8 @@
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Menu, Search, UserPlus, LogIn, X, PlusCircle } from 'lucide-react'
+import { Menu, Search, UserPlus, X, PlusCircle } from 'lucide-react'
 import { SITE_CONFIG } from '@/lib/site-config'
-import { globalContent } from '@/editable/content/global.content'
 import { useEditableLocalAuthSession } from '@/editable/components/EditableLocalAuthForms'
 
 export function EditableNavbar() {
@@ -24,12 +23,7 @@ export function EditableNavbar() {
         {/* Logo */}
         <Link href="/" className="group flex shrink-0 items-center gap-3">
           <img src="/fevicon.png" alt={SITE_CONFIG.name} className="h-10 w-10 object-contain" />
-          <span className="hidden sm:block">
-            <span className="editable-display block text-[17px] font-black leading-none tracking-tight text-slate-900">{SITE_CONFIG.name}</span>
-            <span className="mt-0.5 block text-[9px] font-bold uppercase tracking-[0.18em] text-slate-400">
-              {globalContent.nav?.tagline || SITE_CONFIG.tagline}
-            </span>
-          </span>
+          <span className="editable-display hidden text-[17px] font-black leading-none tracking-tight text-slate-900 sm:block">{SITE_CONFIG.name}</span>
         </Link>
 
         {/* Desktop Nav Links */}
