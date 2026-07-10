@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowRight, Clock3, MapPin } from 'lucide-react'
+import { ArrowRight, MapPin } from 'lucide-react'
 import type { SitePost } from '@/lib/site-connector'
 import type { TaskKey } from '@/lib/site-config'
 
